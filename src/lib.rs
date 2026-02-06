@@ -70,10 +70,12 @@ pub mod prelude {
         object::{TiledObject, TiledObjectVisualOf, TiledObjectVisuals},
         sets::{TiledPostUpdateSystems, TiledPreUpdateSystems, TiledUpdateSystems},
         tile::{TiledTile, TiledTilemap},
+        /*
         world::{
             asset::TiledWorldAsset, chunking::TiledWorldChunking, loader::TiledWorldLoaderError,
             storage::TiledWorldStorage, RespawnTiledWorld, TiledWorld,
         },
+        */
         TiledPlugin, TiledPluginConfig,
     };
 

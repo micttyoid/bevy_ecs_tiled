@@ -39,7 +39,7 @@ avian = ["dep:avian2d", "physics"]
 avian_debug = ["avian", "debug"]
 
 # WASM
-wasm = ["tiled/wasm"]
+#wasm = ["tiled/wasm"]
 
 # User Properties
 user_properties = ["dep:serde", "dep:serde_json"]
@@ -48,7 +48,7 @@ user_properties = ["dep:serde", "dep:serde_json"]
 # Main dependencies
 bevy = { version = "0.18", default-features = false }
 bevy_ecs_tilemap = { version = "0.18", default-features = false }
-tiled = { version = "0.15", features = ["world"] }
+tiled = { version = "0.15", default-features = false }
 
 # Utilities
 futures-lite = "2.6"

@@ -13,7 +13,6 @@ pub mod map;
 pub mod object;
 pub mod sets;
 pub mod tile;
-pub mod world;
 
 pub(crate) mod cache;
 pub(crate) mod reader;
@@ -93,7 +92,6 @@ impl Plugin for TiledPlugin {
 
         app.add_plugins((
             map::plugin,
-            world::plugin,
             animation::plugin,
             cache::plugin,
             event::plugin,

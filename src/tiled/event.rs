@@ -23,7 +23,7 @@ use crate::tiled::{
     map::{asset::TiledMapAsset, TiledMap},
     object::TiledObject,
     tile::{TiledTile, TiledTilemap},
-    world::{asset::TiledWorldAsset, TiledWorld},
+    //world::{asset::TiledWorldAsset, TiledWorld},
 };
 
 /// Wrapper around Tiled events
@@ -41,7 +41,7 @@ pub struct TiledEvent<E: Debug + Clone + Copy + Reflect> {
     pub event: E,
 
     /// [`AssetId`] of the [`TiledWorldAsset`]
-    world: Option<(Entity, AssetId<TiledWorldAsset>)>,
+    //world: Option<(Entity, AssetId<TiledWorldAsset>)>,
     /// [`AssetId`] of the [`TiledMapAsset`]
     map: Option<(Entity, AssetId<TiledMapAsset>)>,
     layer: Option<(Entity, u32)>,
@@ -60,7 +60,6 @@ where
             entity: origin,
             origin,
             event,
-            world: None,
             map: None,
             layer: None,
             tilemap: None,
@@ -78,19 +77,12 @@ where
             entity: self.entity,
             origin: origin.unwrap_or(self.origin),
             event,
-            world: self.world,
             map: self.map,
             layer: self.layer,
             tilemap: self.tilemap,
             tile: self.tile,
             object: self.object,
         }
-    }
-
-    /// Update the world information for this [`TiledEvent`]
-    pub fn with_world(&mut self, entity: Entity, asset_id: AssetId<TiledWorldAsset>) -> &mut Self {
-        self.world = Some((entity, asset_id));
-        self
     }
 
     /// Update the map information for this [`TiledEvent`]
@@ -139,23 +131,6 @@ impl<'a, E> TiledEvent<E>
 where
     E: Debug + Clone + Copy + Reflect,
 {
-    /// Retrieve the [`TiledMap`] [`Entity`] associated with this [`TiledEvent`]
-    pub fn get_world_entity(&self) -> Option<Entity> {
-        self.world.map(|(e, _)| e)
-    }
-
-    /// Retrieve the [`TiledWorldAsset`] associated with this [`TiledEvent`]
-    pub fn get_world_asset(
-        &self,
-        assets: &'a Res<Assets<TiledWorldAsset>>,
-    ) -> Option<&'a TiledWorldAsset> {
-        self.world.and_then(|(_, id)| assets.get(id))
-    }
-
-    /// Retrieve the [`World`] associated with this [`TiledEvent`]
-    pub fn get_world(&self, assets: &'a Res<Assets<TiledWorldAsset>>) -> Option<&'a tiled::World> {
-        self.get_world_asset(assets).map(|w| &w.world)
-    }
 
     /// Retrive the [`TiledWorld`] [`Entity`] associated with this [`TiledEvent`]
     pub fn get_map_entity(&self) -> Option<Entity> {
@@ -303,8 +278,6 @@ pub struct ObjectCreated;
 // /// All event writers used when loading a map
 #[derive(SystemParam)]
 pub(crate) struct TiledMessageWriters<'w> {
-    /// World events writer
-    pub world_created: MessageWriter<'w, TiledEvent<WorldCreated>>,
     /// Map events writer
     pub map_created: MessageWriter<'w, TiledEvent<MapCreated>>,
     /// Layer events writer
