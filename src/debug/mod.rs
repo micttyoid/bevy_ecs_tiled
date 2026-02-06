@@ -7,7 +7,6 @@
 pub mod axis;
 pub mod objects;
 pub mod tiles;
-pub mod world_chunk;
 
 use bevy::app::{PluginGroup, PluginGroupBuilder};
 
@@ -29,7 +28,6 @@ impl PluginGroup for TiledDebugPluginGroup {
         PluginGroupBuilder::start::<Self>()
             .add(objects::TiledDebugObjectsPlugin::default())
             .add(tiles::TiledDebugTilesPlugin::default())
-            .add(world_chunk::TiledDebugWorldChunkPlugin::default())
             .add(axis::TiledDebugAxisPlugin)
     }
 }

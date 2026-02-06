@@ -32,7 +32,6 @@ pub mod prelude {
         axis::TiledDebugAxisPlugin,
         objects::{TiledDebugObjectsConfig, TiledDebugObjectsPlugin},
         tiles::{TiledDebugTilesConfig, TiledDebugTilesPlugin},
-        world_chunk::{TiledDebugWorldChunkConfig, TiledDebugWorldChunkPlugin},
         TiledDebugPluginGroup,
     };
     #[cfg(feature = "avian")]
