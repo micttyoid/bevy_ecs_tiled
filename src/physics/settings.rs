@@ -43,58 +43,39 @@ pub(crate) fn plugin<T: TiledPhysicsBackend>(app: &mut App) {
     app.add_systems(
         PreUpdate,
         (
-            initialize_settings_for_worlds::<T>,
             initialize_settings_for_maps::<T>,
         )
             .chain()
             .in_set(TiledPreUpdateSystems::InitializePhysicsSettings),
     );
+
     app.add_systems(
         PostUpdate,
         handle_settings_update::<T>.in_set(TiledPostUpdateSystems::HandlePhysicsSettingsUpdate),
     );
 }
 
-fn initialize_settings_for_worlds<T: TiledPhysicsBackend>(
-    mut commands: Commands,
-    worlds_query: Query<Entity, (With<TiledWorld>, Without<TiledPhysicsSettings<T>>)>,
-) {
-    for world in worlds_query.iter() {
-        commands
-            .entity(world)
-            .insert(TiledPhysicsSettings::<T>::default());
-    }
-}
-
 fn initialize_settings_for_maps<T: TiledPhysicsBackend>(
     mut commands: Commands,
-    maps_query: Query<
-        (Entity, Option<&ChildOf>),
-        (With<TiledMap>, Without<TiledPhysicsSettings<T>>),
-    >,
-    worlds_query: Query<&TiledPhysicsSettings<T>, With<TiledWorld>>,
+    maps_query: Query<Entity, (With<TiledMap>, Without<TiledPhysicsSettings<T>>)>,
 ) {
-    for (map, child_of) in maps_query.iter() {
-        commands.entity(map).insert(
-            child_of
-                .and_then(|child_of| worlds_query.get(child_of.parent()).ok())
-                .cloned()
-                .unwrap_or_default(),
-        );
+    for map_entity in maps_query.iter() {
+        // Use default settings or load from a resource/asset
+        commands.entity(map_entity).insert(TiledPhysicsSettings::<T>::default());
     }
 }
-
 fn handle_settings_update<T: TiledPhysicsBackend>(
     mut commands: Commands,
     maps_query: Query<(Entity, Ref<TiledPhysicsSettings<T>>), With<TiledMap>>,
-    worlds_query: Query<(Entity, Ref<TiledPhysicsSettings<T>>), With<TiledWorld>>,
+    //worlds_query: Query<(Entity, Ref<TiledPhysicsSettings<T>>), With<TiledWorld>>,
 ) {
+    /*
     for (world, settings) in worlds_query.iter() {
         if settings.is_changed() && !settings.is_added() {
             commands.entity(world).insert(RespawnTiledWorld);
         }
     }
-
+    */
     for (map, settings) in maps_query.iter() {
         if settings.is_changed() && !settings.is_added() {
             commands.entity(map).insert(RespawnTiledMap);

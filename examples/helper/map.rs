@@ -9,7 +9,7 @@ pub fn rotate(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut world_or_map_query: Query<
         (Option<&ChildOf>, Option<&TiledMap>, &mut Transform),
-        Or<(With<TiledMap>, With<TiledWorld>)>,
+        With<TiledMap>,
     >,
 ) {
     for (parent, map_marker, mut transform) in world_or_map_query.iter_mut() {
